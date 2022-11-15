@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/atotto/clipboard"
@@ -46,9 +45,7 @@ func GetServer(addr string, handle func(engine *gin.Engine)) *http.Server {
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
-	host := os.Getenv("GO_HOST")
-
-	server := GetServer(host+":8080", func(engine *gin.Engine) {
+	server := GetServer("0.0.0.0:8080", func(engine *gin.Engine) {
 		LoadRouters(engine)
 	})
 

@@ -3,7 +3,7 @@
 BINARY="clipsync"
 BINARY_WIN="clipsync.exe"
 
-default: gotool build
+default: gotool build_win
 
 export CGO_ENABLED=0
 export GOARCH=amd64
