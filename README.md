@@ -1,16 +1,7 @@
 # clipsync
 
-default account:
-```json
-{
-    "account": "admin@erots.com",
-    "password": "admin"
-}
 ```
-
-```
---config [string] Set config file path.
---log    [string] Set log file path.
+-p [string] The service listening port.
 ```
 
 
@@ -18,16 +9,32 @@ default account:
 
 ### file
 
-- POST `/api/file/image/:module`
+- POST `/api/clip`
 
-    使用 FORM 上传图片，图片文件的键为 `image`。
+    Set clipboard.
 
-    成功时返回 `json` 对象包含 `path` 字段，使用域名 + `path` 即可访问该图片。
+    Body:
+    ```json
+    {
+        "data": "Hello world!"
+    }
+    ```
 
-- DELETE `/api/file/image/:module/:date/:name`
+    Response:
+    ```json
+    {
+        "status": true
+    }
+    ```
 
-    删除图片，url 参数中的 `:date` 和 `:name` 可从上传时返回的链接中取。
+- GET `/api/clip`
 
-- POST `/api/file/app/:name`
+    Get clipboard.
 
-    上传 App 文件，成功时和上传图片一样，返回一个访问路径。
+    Response:
+    ```json
+    {
+        "status": true,
+        "data": "Hello world!"
+    }
+    ```

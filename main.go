@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,6 +11,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ipuppet/gtools/handler"
 	"golang.org/x/sync/errgroup"
+)
+
+var (
+	Port string
+)
+
+const (
+	portDefault = "8080"
+	portUsage   = "The service listening port."
 )
 
 func GetServer(addr string, handle func(engine *gin.Engine)) *http.Server {
@@ -45,7 +55,10 @@ func GetServer(addr string, handle func(engine *gin.Engine)) *http.Server {
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
-	server := GetServer("0.0.0.0:8080", func(engine *gin.Engine) {
+	flag.StringVar(&Port, "p", portDefault, portUsage)
+	flag.Parse()
+
+	server := GetServer("0.0.0.0:"+Port, func(engine *gin.Engine) {
 		LoadRouters(engine)
 	})
 
