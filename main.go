@@ -80,7 +80,7 @@ func LoadRouters(e *gin.Engine) {
 
 	e.POST("/api/clip", func(c *gin.Context) {
 		type JsonParam struct {
-			Content string `form:"content" json:"content" binding:"required"`
+			Data string `form:"data" json:"data" binding:"required"`
 		}
 		var jsonParam JsonParam
 		if err := c.ShouldBind(&jsonParam); err != nil {
@@ -88,6 +88,6 @@ func LoadRouters(e *gin.Engine) {
 			return
 		}
 
-		handler.JsonStatus(c, clipboard.WriteAll(jsonParam.Content))
+		handler.JsonStatus(c, clipboard.WriteAll(jsonParam.Data))
 	})
 }
