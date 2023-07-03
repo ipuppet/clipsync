@@ -1,5 +1,7 @@
 # clipsync
 
+> Sync clip with http api
+
 ```
 -p [string] The service listening port.
 ```

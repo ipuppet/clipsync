@@ -13,6 +13,7 @@ build: clean_win
 	@go env -w CGO_ENABLED=$(CGO_ENABLED)
 	@go env -w GOOS=$(GOOS)
 	@go env -w GOARCH=$(GOARCH)
+	go generate
 	go build -ldflags="-s -w" -o ${BINARY}
 
 build_win: export GOOS=windows
@@ -20,6 +21,7 @@ build_win: clean_win
 	@go env -w CGO_ENABLED=$(CGO_ENABLED)
 	@go env -w GOOS=$(GOOS)
 	@go env -w GOARCH=$(GOARCH)
+	go generate
 	go build -ldflags="-s -w -H=windowsgui" -o ${BINARY_WIN}
 
 run: export GOOS=windows
