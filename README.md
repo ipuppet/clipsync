@@ -6,6 +6,11 @@
 -p [string] The service listening port.
 ```
 
+## Build
+
+require github.com/josephspurrier/goversioninfo
+
+`make build_win`
 
 ## API
 
