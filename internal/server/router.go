@@ -1,7 +1,7 @@
 package server
 
 import (
-	"net/http"
+	"fmt"
 
 	"github.com/atotto/clipboard"
 	"github.com/gin-gonic/gin"
@@ -16,11 +16,11 @@ func LoadRouters(e *gin.Engine) {
 
 	e.POST("/api/clip", func(c *gin.Context) {
 		type JsonParam struct {
-			Data string `form:"data" json:"data" binding:"required"`
+			Data string `json:"data" binding:"required"`
 		}
 		var jsonParam JsonParam
-		if err := c.ShouldBind(&jsonParam); err != nil {
-			c.AbortWithError(http.StatusBadRequest, err)
+		if err := c.BindJSON(&jsonParam); err != nil {
+			fmt.Println(jsonParam)
 			return
 		}
 
