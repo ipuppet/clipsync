@@ -9,6 +9,10 @@ import (
 )
 
 func LoadRouters(e *gin.Engine) {
+	e.HEAD("/api/ping", func(c *gin.Context) {
+		handler.JsonStatusWithData(c, "pong", nil)
+	})
+
 	e.GET("/api/clip", func(c *gin.Context) {
 		text, err := clipboard.ReadAll()
 		handler.JsonStatusWithData(c, text, err)
