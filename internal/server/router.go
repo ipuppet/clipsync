@@ -20,7 +20,7 @@ func LoadRouters(e *gin.Engine) {
 
 	e.POST("/api/clip", func(c *gin.Context) {
 		type JsonParam struct {
-			Data string `json:"data" binding:"required"`
+			Data string `json:"data" binding:"-"`
 		}
 		var jsonParam JsonParam
 		if err := c.BindJSON(&jsonParam); err != nil {
