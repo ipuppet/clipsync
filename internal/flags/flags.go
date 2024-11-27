@@ -23,9 +23,9 @@ const (
 )
 
 func init() {
-	flag.StringVar(&server.Port, "p", portDefault, portUsage)
+	flag.StringVar(&server.Port, "port", portDefault, portUsage)
 	flag.StringVar(&Address, "addr", addressDefault, addressUsage)
-	flag.StringVar(&ConfigPath, "config", configPathDefault, configPathUsage)
+	flag.StringVar(&ConfigPath, "conf", configPathDefault, configPathUsage)
 
 	flag.Parse()
 }

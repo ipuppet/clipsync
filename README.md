@@ -2,8 +2,10 @@
 
 > Sync clip with http api
 
-```
--p [string] The service listening port.
+```bash
+-port [string] The service listening port.
+-addr [string] The service listening address.
+-conf [string] The config file path.
 ```
 
 ## Build
@@ -23,6 +25,7 @@ require github.com/josephspurrier/goversioninfo
     Set clipboard.
 
     Body:
+
     ```json
     {
         "data": "Hello world!"
@@ -30,6 +33,7 @@ require github.com/josephspurrier/goversioninfo
     ```
 
     Response:
+
     ```json
     {
         "status": true
@@ -41,6 +45,7 @@ require github.com/josephspurrier/goversioninfo
     Get clipboard.
 
     Response:
+
     ```json
     {
         "status": true,
