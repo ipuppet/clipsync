@@ -1,6 +1,7 @@
 package server
 
 import (
+	"clipsync/internal/flags"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,10 +9,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/sync/errgroup"
-)
-
-var (
-	Port string
 )
 
 func getServer(addr string) *http.Server {
@@ -45,8 +42,8 @@ func getServer(addr string) *http.Server {
 
 }
 
-func InitServer(addr string) {
-	server := getServer(addr + ":" + Port)
+func InitServer() {
+	server := getServer(flags.Address + ":" + flags.Port)
 
 	var g errgroup.Group
 	g.Go(func() error {

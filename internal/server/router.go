@@ -2,6 +2,8 @@ package server
 
 import (
 	"clipsync/internal/pkg"
+	"encoding/base64"
+	"errors"
 
 	"github.com/atotto/clipboard"
 	"github.com/gin-gonic/gin"
@@ -21,7 +23,8 @@ func LoadRouters(e *gin.Engine) {
 		}
 
 		encrypted, err := pkg.AesEncrypt([]byte(text), []byte(config.Aes.Key), []byte(config.Aes.IV))
-		handler.JsonStatusWithData(c, string(encrypted), err)
+		encoded := base64.StdEncoding.EncodeToString(encrypted)
+		handler.JsonStatusWithData(c, encoded, err)
 	})
 
 	e.POST("/api/clip", func(c *gin.Context) {
@@ -34,7 +37,12 @@ func LoadRouters(e *gin.Engine) {
 			return
 		}
 
-		decrypted, err := pkg.AesDecrypt([]byte(jsonParam.Data), []byte(config.Aes.Key), []byte(config.Aes.IV))
+		decoded, err := base64.StdEncoding.DecodeString(jsonParam.Data)
+		if err != nil {
+			handler.JsonStatus(c, errors.New("invalid data"))
+			return
+		}
+		decrypted, err := pkg.AesDecrypt(decoded, []byte(config.Aes.Key), []byte(config.Aes.IV))
 		if err != nil {
 			handler.JsonStatus(c, err)
 			return

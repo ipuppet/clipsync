@@ -1,6 +1,9 @@
 package server
 
-import "clipsync/internal/pkg"
+import (
+	"clipsync/internal/flags"
+	"clipsync/internal/pkg"
+)
 
 type Aes struct {
 	Key string `json:"key"`
@@ -14,5 +17,5 @@ type Config struct {
 var config *Config
 
 func init() {
-	pkg.GetConfig("config/config.json", &config)
+	pkg.GetConfig(flags.ConfigPath, &config)
 }

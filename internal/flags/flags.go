@@ -2,11 +2,10 @@ package flags
 
 import (
 	"flag"
-
-	"clipsync/internal/server"
 )
 
 var (
+	Port       string
 	Address    string
 	ConfigPath string
 )
@@ -23,7 +22,7 @@ const (
 )
 
 func init() {
-	flag.StringVar(&server.Port, "port", portDefault, portUsage)
+	flag.StringVar(&Port, "port", portDefault, portUsage)
 	flag.StringVar(&Address, "addr", addressDefault, addressUsage)
 	flag.StringVar(&ConfigPath, "conf", configPathDefault, configPathUsage)
 
