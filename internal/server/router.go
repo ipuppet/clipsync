@@ -1,7 +1,7 @@
 package server
 
 import (
-	"fmt"
+	"clipsync/internal/pkg"
 
 	"github.com/atotto/clipboard"
 	"github.com/gin-gonic/gin"
@@ -15,7 +15,13 @@ func LoadRouters(e *gin.Engine) {
 
 	e.GET("/api/clip", func(c *gin.Context) {
 		text, err := clipboard.ReadAll()
-		handler.JsonStatusWithData(c, text, err)
+		if err != nil {
+			handler.JsonStatus(c, err)
+			return
+		}
+
+		encrypted, err := pkg.AesEncrypt([]byte(text), []byte(config.Aes.Key), []byte(config.Aes.IV))
+		handler.JsonStatusWithData(c, string(encrypted), err)
 	})
 
 	e.POST("/api/clip", func(c *gin.Context) {
@@ -24,10 +30,16 @@ func LoadRouters(e *gin.Engine) {
 		}
 		var jsonParam JsonParam
 		if err := c.BindJSON(&jsonParam); err != nil {
-			fmt.Println(jsonParam)
+			handler.JsonStatus(c, err)
 			return
 		}
 
-		handler.JsonStatus(c, clipboard.WriteAll(jsonParam.Data))
+		decrypted, err := pkg.AesDecrypt([]byte(jsonParam.Data), []byte(config.Aes.Key), []byte(config.Aes.IV))
+		if err != nil {
+			handler.JsonStatus(c, err)
+			return
+		}
+
+		handler.JsonStatus(c, clipboard.WriteAll(string(decrypted)))
 	})
 }
