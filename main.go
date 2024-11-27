@@ -8,7 +8,6 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/gin-gonic/gin"
 
-	"clipsync/internal/flags"
 	"clipsync/internal/icon"
 	"clipsync/internal/server"
 )
@@ -28,7 +27,7 @@ func onReady() {
 		systray.Quit()
 	}()
 
-	server.InitServer(flags.Address)
+	server.InitServer()
 }
 
 func onExit() {

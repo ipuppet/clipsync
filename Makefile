@@ -26,7 +26,7 @@ build_win: clean
 
 run: export GOOS=windows
 run:
-	go run ./ -addr=localhost
+	go run .
 
 clean:
 	go clean

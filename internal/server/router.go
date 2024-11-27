@@ -1,7 +1,9 @@
 package server
 
 import (
-	"fmt"
+	"clipsync/internal/pkg"
+	"encoding/base64"
+	"errors"
 
 	"github.com/atotto/clipboard"
 	"github.com/gin-gonic/gin"
@@ -9,21 +11,43 @@ import (
 )
 
 func LoadRouters(e *gin.Engine) {
+	e.HEAD("/api/ping", func(c *gin.Context) {
+		handler.JsonStatusWithData(c, "pong", nil)
+	})
+
 	e.GET("/api/clip", func(c *gin.Context) {
 		text, err := clipboard.ReadAll()
-		handler.JsonStatusWithData(c, text, err)
+		if err != nil {
+			handler.JsonStatus(c, err)
+			return
+		}
+
+		encrypted, err := pkg.AesEncrypt([]byte(text), []byte(config.Aes.Key), []byte(config.Aes.IV))
+		encoded := base64.StdEncoding.EncodeToString(encrypted)
+		handler.JsonStatusWithData(c, encoded, err)
 	})
 
 	e.POST("/api/clip", func(c *gin.Context) {
 		type JsonParam struct {
-			Data string `json:"data" binding:"required"`
+			Data string `json:"data" binding:"-"`
 		}
 		var jsonParam JsonParam
 		if err := c.BindJSON(&jsonParam); err != nil {
-			fmt.Println(jsonParam)
+			handler.JsonStatus(c, err)
 			return
 		}
 
-		handler.JsonStatus(c, clipboard.WriteAll(jsonParam.Data))
+		decoded, err := base64.StdEncoding.DecodeString(jsonParam.Data)
+		if err != nil {
+			handler.JsonStatus(c, errors.New("invalid data"))
+			return
+		}
+		decrypted, err := pkg.AesDecrypt(decoded, []byte(config.Aes.Key), []byte(config.Aes.IV))
+		if err != nil {
+			handler.JsonStatus(c, err)
+			return
+		}
+
+		handler.JsonStatus(c, clipboard.WriteAll(string(decrypted)))
 	})
 }
