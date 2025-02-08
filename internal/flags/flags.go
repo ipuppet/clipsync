@@ -11,7 +11,7 @@ var (
 )
 
 const (
-	portDefault = "8080"
+	portDefault = "8980"
 	portUsage   = "The service listening port."
 
 	addressDefault = "0.0.0.0"

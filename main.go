@@ -8,6 +8,7 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/gin-gonic/gin"
 
+	"clipsync/internal/flags"
 	"clipsync/internal/icon"
 	"clipsync/internal/server"
 )
@@ -21,6 +22,7 @@ func onReady() {
 	systray.SetIcon(icon.GetIconBytes())
 	systray.SetTitle("clipsync")
 	systray.SetTooltip("clipsync")
+	systray.AddMenuItem("Listening on: "+flags.Address+":"+flags.Port, "")
 	mQuitOrig := systray.AddMenuItem("Quit", "Quit clipsync")
 	go func() {
 		<-mQuitOrig.ClickedCh
