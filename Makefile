@@ -1,28 +1,19 @@
-.PHONY: default build build_win run clean help
+.PHONY: default build run clean help
 
-BINARY="clipsync"
-BINARY_WIN="clipsync.exe"
+BINARY="clipsync.exe"
 
-default: build_win
+default: build
 
 export CGO_ENABLED=0
 export GOARCH=amd64
 
-build: export GOOS=linux
+build: export GOOS=windows
 build: clean
 	@go env -w CGO_ENABLED=$(CGO_ENABLED)
 	@go env -w GOOS=$(GOOS)
 	@go env -w GOARCH=$(GOARCH)
 	go generate
-	go build -ldflags="-s -w" -o ${BINARY}
-
-build_win: export GOOS=windows
-build_win: clean
-	@go env -w CGO_ENABLED=$(CGO_ENABLED)
-	@go env -w GOOS=$(GOOS)
-	@go env -w GOARCH=$(GOARCH)
-	go generate
-	go build -ldflags="-s -w -H=windowsgui" -o ${BINARY_WIN}
+	go build -ldflags="-s -w -H=windowsgui" -o ${BINARY}
 
 run: export GOOS=windows
 run:
@@ -30,10 +21,10 @@ run:
 
 clean:
 	go clean
+	-@rm -rf ./${BINARY}
 
 help:
-	@echo "make           - Default build (build_win)"
-	@echo "make build     - Build binary for linux"
-	@echo "make build_win - Build binary for Windows"
+	@echo "make           - Default build"
+	@echo "make build     - Build binary for Windows"
 	@echo "make run       - Run code use `go run`"
-	@echo "make clean     - Run `go clean`
+	@echo "make clean     - Clean
