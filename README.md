@@ -14,7 +14,7 @@ require github.com/josephspurrier/goversioninfo
 
 `go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@latest`
 
-`make build_win`
+`make build`
 
 ## API
 

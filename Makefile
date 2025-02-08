@@ -20,8 +20,8 @@ run:
 	go run .
 
 clean:
+	-@del ${BINARY}
 	go clean
-	-@rm -rf ./${BINARY}
 
 help:
 	@echo "make           - Default build"
